@@ -1,0 +1,34 @@
+package tn.esprit.spring.DAO.repositories;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import tn.esprit.spring.DAO.entities.Association;
+@Repository
+public interface AssociationRepository extends CrudRepository<Association,Long>{
+
+	/*@Modifying
+	@Query("DELETE a FROM Association a WHERE a.Places= ?1 And a.NbMonths = ?2")
+	void deleteAssociationByPlacesAndMonths(int p int nb);
+	*/
+	@Query("SELECT a FROM Association a WHERE a.places= ?1")
+	List<Association> retrieveAssociationByPlace(int p);
+	
+	@Query("select a From Association a where a.finishDate<CURRENT_DATE")
+	List<Association> retrieveAssociationByT();
+	
+	@Query("SELECT a FROM Association a WHERE a.intrests<3")
+	List<Association> score500();
+	@Query("SELECT a FROM Association a WHERE a.intrests<6 And a.intrests>3")
+	List<Association> score350();
+	@Query("SELECT a FROM Association a WHERE a.intrests>9 ")
+	List<Association> scoreMin();
+
+	
+	
+}
